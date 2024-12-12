@@ -12,6 +12,8 @@ export async function POST(request: Request) {
     return new Response("Unauthorized", { status: 401 });
   }
 
+  console.log("Files", selectedFilePathnames);
+
   const result = await streamText({
     model: customModel,
     system:

@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "tsx migrate.ts && next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "db:studio": "drizzle-kit studio",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "tsx migrate.ts"
   },
   "dependencies": {
     "@ai-sdk/openai": "^0.0.60",

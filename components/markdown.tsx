@@ -63,6 +63,36 @@ const NonMemoizedMarkdown = ({ children }: { children: string }) => {
         </Link>
       );
     },
+    table: ({ node, children, ...props }: any) => {
+      return (
+        <div className="overflow-x-auto my-4">
+          <table className="min-w-full border-collapse border border-zinc-200 dark:border-zinc-700" {...props}>
+            {children}
+          </table>
+        </div>
+      );
+    },
+    thead: ({ node, children, ...props }: any) => {
+      return (
+        <thead className="bg-zinc-100 dark:bg-zinc-800" {...props}>
+          {children}
+        </thead>
+      );
+    },
+    th: ({ node, children, ...props }: any) => {
+      return (
+        <th className="border border-zinc-200 dark:border-zinc-700 px-4 py-2 text-left" {...props}>
+          {children}
+        </th>
+      );
+    },
+    td: ({ node, children, ...props }: any) => {
+      return (
+        <td className="border border-zinc-200 dark:border-zinc-700 px-4 py-2" {...props}>
+          {children}
+        </td>
+      );
+    },
   };
 
   return (

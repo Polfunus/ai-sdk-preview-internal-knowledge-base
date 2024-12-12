@@ -10,10 +10,16 @@ import { chat, chunk, user } from "@/schema";
 let client = postgres(`${process.env.POSTGRES_URL!}?sslmode=require`);
 let db = drizzle(client);
 
+/**
+ * Retrieves a user from the database by their email address
+ */
 export async function getUser(email: string) {
   return await db.select().from(user).where(eq(user.email, email));
 }
 
+/**
+ * Creates a new user in the database with a hashed password
+ */
 export async function createUser(email: string, password: string) {
   let salt = genSaltSync(10);
   let hash = hashSync(password, salt);
@@ -21,6 +27,11 @@ export async function createUser(email: string, password: string) {
   return await db.insert(user).values({ email, password: hash });
 }
 
+/**
+ * Creates or updates a chat message in the database
+ * If a chat with the given ID exists, updates its messages
+ * If no chat exists, creates a new chat entry
+ */
 export async function createMessage({
   id,
   messages,
@@ -49,6 +60,9 @@ export async function createMessage({
   });
 }
 
+/**
+ * Retrieves all chats for a specific user, ordered by creation date (newest first)
+ */
 export async function getChatsByUser({ email }: { email: string }) {
   return await db
     .select()
@@ -57,15 +71,24 @@ export async function getChatsByUser({ email }: { email: string }) {
     .orderBy(desc(chat.createdAt));
 }
 
+/**
+ * Retrieves a specific chat by its ID
+ */
 export async function getChatById({ id }: { id: string }) {
   const [selectedChat] = await db.select().from(chat).where(eq(chat.id, id));
   return selectedChat;
 }
 
+/**
+ * Inserts multiple chunks of data into the database
+ */
 export async function insertChunks({ chunks }: { chunks: any[] }) {
   return await db.insert(chunk).values(chunks);
 }
 
+/**
+ * Retrieves chunks by their file paths
+ */
 export async function getChunksByFilePaths({
   filePaths,
 }: {
@@ -77,6 +100,9 @@ export async function getChunksByFilePaths({
     .where(inArray(chunk.filePath, filePaths));
 }
 
+/**
+ * Deletes all chunks associated with a specific file path
+ */
 export async function deleteChunksByFilePath({
   filePath,
 }: {

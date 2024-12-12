@@ -63,7 +63,7 @@ export function Chat({
     }
   }, [session]);
 
-  const { messages, handleSubmit, input, setInput, append } = useChat({
+  const { messages, handleSubmit, input, setInput, append, isLoading } = useChat({
     body: { id, selectedFilePathnames },
     initialMessages,
     onFinish: () => {
@@ -129,11 +129,12 @@ export function Chat({
         >
           <input
             className="bg-zinc-100 rounded-md px-2 py-1.5 flex-1 outline-none dark:bg-zinc-700 text-zinc-800 dark:text-zinc-300"
-            placeholder="Send a message..."
+            placeholder={isLoading ? "Thinking..." : "Send a message..."}
             value={input}
             onChange={(event) => {
               setInput(event.target.value);
             }}
+            disabled={isLoading}
           />
 
           <div
